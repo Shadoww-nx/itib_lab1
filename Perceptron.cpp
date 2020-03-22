@@ -75,3 +75,4 @@ double Perceptron::derivative(double net){
 double Perceptron::logistic_function(double net){
     return 1/(1 + exp(-net));
 }
+
