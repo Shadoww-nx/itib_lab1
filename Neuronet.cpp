@@ -20,13 +20,6 @@ Neuronet::Neuronet(int n, double nu_input){
     for(int i = 0; i < number_of_variables; ++i){
         truth_table_create(i);
     }
-    /*
-    for(int i = 0; i < pow(2,n); ++i){
-        for(int j = 0; j < n; ++j){
-            cout<< truth_table[i][j]<< " ";
-        }
-        cout<<endl;
-    }*/
 }
 
 void Neuronet::truth_table_create(int variable){
@@ -53,16 +46,17 @@ string Neuronet::boolean_function(int function_variant){
     return result;
 }
 
-string Neuronet::training_neuronet(bool full_or_min,int activation_funtion_variant, string result, int function_variant){
+string Neuronet::training_neuronet(bool full_or_min,int activation_funtion_variant, int function_variant){
     string result_bool = boolean_function(function_variant);
     if(full_or_min == 0)
-        return result_bool + training_neuronet_full(activation_funtion_variant, result);
+        return result_bool + training_neuronet_full(activation_funtion_variant);
     else if(full_or_min == 1)
-        return result_bool + training_neuronet_min(activation_funtion_variant, result);
+        return result_bool + training_neuronet_min(activation_funtion_variant);
 }
 
-string Neuronet::training_neuronet_min(int activation_funtion_variant, string result){
+string Neuronet::training_neuronet_min(int activation_funtion_variant){
     string current_result;
+    string result;
     bool flag = false;
     unsigned int error_counts = 0;
     unsigned int current_epoh_number = 0;
@@ -75,7 +69,6 @@ string Neuronet::training_neuronet_min(int activation_funtion_variant, string re
         for(int i = 0; i < size; ++i){
             combs[i] = new int[k];
         }
-        int* y_out = new int[number_of_lines];
 
         combination(combs, number_of_lines, k);
         for(int i = 0; i < size; ++i){
@@ -89,7 +82,7 @@ string Neuronet::training_neuronet_min(int activation_funtion_variant, string re
                         error_counts++;
                 }
 
-                current_result = current_result + "Epoh Number: " + to_string(current_epoh_number) + "; Vector Weigth: " + " W = ( ";
+                current_result = current_result + "Epoh Number: " + to_string(current_epoh_number) + ";" + "count error:" + to_string(error_counts) + " Vector Weigth: " + " W = ( ";
                 vector<double> weigth = one.getW();
                 for(int i = 0; i < weigth.size(); ++i){
                     current_result = current_result + to_string(weigth[i]) + " ";
@@ -118,7 +111,6 @@ string Neuronet::training_neuronet_min(int activation_funtion_variant, string re
                 current_result.clear();
             }
         }
-        //delete[] y_out;
         for(int i = 0; i < size; ++i){
             delete[] combs[i];
         }
@@ -131,7 +123,8 @@ string Neuronet::training_neuronet_min(int activation_funtion_variant, string re
     return result;
 }
 
-string Neuronet::training_neuronet_full(int activation_funtion_variant, string result){
+string Neuronet::training_neuronet_full(int activation_funtion_variant){
+    string result;
     unsigned int error_counts = 0;
     unsigned int Epoh_number = 0;
     Perceptron one(nu, number_of_variables, activation_funtion_variant);
@@ -147,7 +140,7 @@ string Neuronet::training_neuronet_full(int activation_funtion_variant, string r
             }
         }
         result = result + ")" + '\n';
-        result = result + "Epoh Number: " + to_string(Epoh_number) + "; Vector Weigth: W = ( ";
+        result = result + "Epoh Number: " + to_string(Epoh_number) + ";" + " Count_error: " + to_string(error_counts) + "; Vector Weigth: W = ( ";
         vector<double> weigth = one.getW();
         for(int i = 0; i < weigth.size(); ++i){
             result = result + to_string(weigth[i]) + " ";
