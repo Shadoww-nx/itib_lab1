@@ -6,11 +6,11 @@ using namespace std;
 class Neuronet{
     public:
         Neuronet(int, double);
-        string training_neuronet(bool, int, string, int);
+        string training_neuronet(bool, int, int);
         ~Neuronet();
     private:
-        string training_neuronet_full(int, string);
-        string training_neuronet_min(int, string);
+        string training_neuronet_full(int);
+        string training_neuronet_min(int);
         string boolean_function(int);
         void truth_table_create(int);
         unsigned long long fact(int);
